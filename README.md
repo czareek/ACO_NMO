@@ -90,48 +90,62 @@ gdzie $d(i,j)$ to odległość między węzłami $i$ i $j$.
 
 W repozytorium **czareek/ACO\_NMO** znajduje się implementacja algorytmu Ant Colony Optimization, która realizuje heurystyczne przeszukiwanie grafu 50 lotnisk opisane następującymi etapami:
 
-1. **Ogólna idea**
-   Metaheurystyka ACO symuluje zachowania kolonii mrówek, które oznaczają preferowane ścieżki feromonami. W tej implementacji każda krawędź między lotniskami przechowuje poziom feromonów $\tau_{ij}$ , a informacja heurystyczna $\eta_{ij} = 1/d(i,j)$ odzwierciedla dystans. Mrówki "wybierają" kolejne lotnisko z prawdopodobieństwem:
+## 1. Ogólna idea
 
-   $$
-   p_{ij} = \frac{\tau_{ij}^\alpha \,\eta_{ij}^\beta}{\sum_{k\in U_i} \tau_{ik}^\alpha \,\eta_{ik}^\beta},
-   $$
+Metaheurystyka ACO (Ant Colony Optimization) symuluje zachowanie kolonii mrówek, które oznaczają preferowane ścieżki feromonami. W tej implementacji każda krawędź między lotniskami przechowuje poziom feromonów \( \tau_{ij} \), a informacja heurystyczna \( \eta_{ij} = \frac{1}{d(i,j)} \) odzwierciedla odwrotność odległości między wierzchołkami \( i \) i \( j \). Mrówki wybierają kolejne lotnisko z prawdopodobieństwem:
 
-   gdzie U to zbiór jeszcze nieodwiedzonych wierzchołków.
+$$
+p_{ij} = \frac{\tau_{ij}^\alpha \cdot \eta_{ij}^\beta}{\sum\limits_{k \in U_i} \tau_{ik}^\alpha \cdot \eta_{ik}^\beta},
+$$
 
-2. **Hiperparametry**
-   Kluczowe parametry algorytmu to:
+gdzie \( U_i \) to zbiór wierzchołków jeszcze nieodwiedzonych przez mrówkę znajdującą się w wierzchołku \( i \).
 
-   * **α** – wpływ śladu feromonowego na wybór kolejnego węzła;
-   * **β** – waga informacji heurystycznej (odległości między węzłami);
-   * **ρ** – współczynnik odparowania feromonów, określający tempo zanikania śladu;
-   * **m** – liczba mrówek działających równolegle w każdej iteracji;
-   * **n\_best** – liczba najlepszych tras wybranych do depozycji feromonów;
-   * **iteracje** – maksymalna liczba iteracji algorytmu;
-   * **patience** – dopuszczalna liczba kolejnych iteracji bez poprawy, po której algorytm kończy działanie.
+---
 
-3. **Mechanizm działania**
-   Algorytm przebiega w cyklu iteracji, z następującymi krokami:
+## 2. Hiperparametry
 
-   1. **Budowa tras** – każda z m mrówek konstruuje pełny cykl, wybierając lotniska wg rozkładu $p_{ij}$.
-   2. **Ocena tras** – obliczana jest długość każdej ścieżki:
+Kluczowe parametry algorytmu:
 
-      $$
-      C = \sum_{i=1}^{n} d(i, j),
-      $$
+- \( \alpha \) – wpływ poziomu feromonów na wybór ścieżki;
+- \( \beta \) – znaczenie informacji heurystycznej (np. odwrotność odległości);
+- \( \rho \) – współczynnik odparowania feromonów;
+- \( m \) – liczba mrówek działających równolegle w każdej iteracji;
+- \( n_{\text{best}} \) – liczba najlepszych tras, które biorą udział w wzmocnieniu feromonów;
+- `iteracje` – maksymalna liczba iteracji algorytmu;
+- `patience` – liczba kolejnych iteracji bez poprawy, po której algorytm kończy działanie.
 
-      gdzie suma przebiega po kolejnych krawędziach ścieżki.
-   3. **Odparowanie feromonów** – na wszystkich krawędziach następuje redukcja feromonów:
+---
 
-      $$
-      \tau_{ij} \gets (1 - \rho) \,\tau_{ij}.
-      $$
-   4. **Depozycja feromonów** – najlepsze n\_best ścieżki wzmacniają feromony:
+## 3. Mechanizm działania
 
-      $$
-      \tau_{ij} \gets \tau_{ij} + \sum_{\ell=1}^{n_{\text{best}}} \frac{1}{C_{\ell}}.
-      $$
-   5. **Wczesne zatrzymanie** – jeżeli przez kolejne #patience iteracji nie nastąpi poprawa, algorytm przerywa działanie.
+Algorytm działa iteracyjnie i składa się z następujących etapów:
+
+1. **Budowa tras** – każda z \( m \) mrówek konstruuje pełny cykl, wybierając kolejne lotniska zgodnie z rozkładem \( p_{ij} \).
+
+2. **Ocena tras** – obliczana jest długość każdej ścieżki:
+
+$$
+C = \sum_{(i,j) \in \text{trasa}} d(i, j),
+$$
+
+gdzie suma przebiega po kolejnych krawędziach ścieżki skonstruowanej przez mrówkę.
+
+3. **Odparowanie feromonów** – poziom feromonów na każdej krawędzi ulega redukcji:
+
+$$
+\tau_{ij} \leftarrow (1 - \rho) \cdot \tau_{ij}.
+$$
+
+4. **Depozycja feromonów** – najlepsze \( n_{\text{best}} \) tras wzmacniają poziom feromonów:
+
+$$
+\tau_{ij} \leftarrow \tau_{ij} + \sum_{\ell = 1}^{n_{\text{best}}} \frac{\delta_{ij}^{(\ell)}}{C_\ell},
+$$
+
+gdzie \( \delta_{ij}^{(\ell)} = 1 \), jeśli krawędź \( (i,j) \) występuje w trasie \( \ell \), a 0 w przeciwnym razie.
+
+5. **Wczesne zatrzymanie** – jeżeli przez kolejne `patience` iteracji nie nastąpi poprawa najlepszego wyniku, algorytm przerywa działanie.
+
 
 ## 8. Podsumowanie i wnioski
 
