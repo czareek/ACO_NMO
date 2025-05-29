@@ -92,13 +92,13 @@ W repozytorium **czareek/ACO\_NMO** znajduje się implementacja algorytmu Ant Co
 
 ## 1. Ogólna idea
 
-Metaheurystyka ACO (Ant Colony Optimization) symuluje zachowanie kolonii mrówek, które oznaczają preferowane ścieżki feromonami. W tej implementacji każda krawędź między lotniskami przechowuje poziom feromonów \( \tau_{ij} \), a informacja heurystyczna \( \eta_{ij} = \frac{1}{d(i,j)} \) odzwierciedla odwrotność odległości między wierzchołkami \( i \) i \( j \). Mrówki wybierają kolejne lotnisko z prawdopodobieństwem:
+Metaheurystyka ACO (Ant Colony Optimization) symuluje zachowanie kolonii mrówek, które oznaczają preferowane ścieżki feromonami. W tej implementacji każda krawędź między lotniskami przechowuje poziom feromonów $\( \tau_{ij} \)$, a informacja heurystyczna $\( \eta_{ij} = \frac{1}{d(i,j)} \)$ odzwierciedla odwrotność odległości między wierzchołkami $\( i \)$ i $\( j \)$. Mrówki wybierają kolejne lotnisko z prawdopodobieństwem:
 
 $$
 p_{ij} = \frac{\tau_{ij}^\alpha \cdot \eta_{ij}^\beta}{\sum\limits_{k \in U_i} \tau_{ik}^\alpha \cdot \eta_{ik}^\beta},
 $$
 
-gdzie \( U_i \) to zbiór wierzchołków jeszcze nieodwiedzonych przez mrówkę znajdującą się w wierzchołku \( i \).
+gdzie $\( U_i \)$ to zbiór wierzchołków jeszcze nieodwiedzonych przez mrówkę znajdującą się w wierzchołku $\( i \)$.
 
 ---
 
@@ -106,11 +106,11 @@ gdzie \( U_i \) to zbiór wierzchołków jeszcze nieodwiedzonych przez mrówkę 
 
 Kluczowe parametry algorytmu:
 
-- \( \alpha \) – wpływ poziomu feromonów na wybór ścieżki;
-- \( \beta \) – znaczenie informacji heurystycznej (np. odwrotność odległości);
-- \( \rho \) – współczynnik odparowania feromonów;
-- \( m \) – liczba mrówek działających równolegle w każdej iteracji;
-- \( n_{\text{best}} \) – liczba najlepszych tras, które biorą udział w wzmocnieniu feromonów;
+- $\( \alpha \)$ – wpływ poziomu feromonów na wybór ścieżki;
+- $\( \beta \)$ – znaczenie informacji heurystycznej (np. odwrotność odległości);
+- $\( \rho \)$ – współczynnik odparowania feromonów;
+- $\( m \)$ – liczba mrówek działających równolegle w każdej iteracji;
+- $\( n_{\text{best}} \)$ – liczba najlepszych tras, które biorą udział w wzmocnieniu feromonów;
 - `iteracje` – maksymalna liczba iteracji algorytmu;
 - `patience` – liczba kolejnych iteracji bez poprawy, po której algorytm kończy działanie.
 
@@ -120,7 +120,7 @@ Kluczowe parametry algorytmu:
 
 Algorytm działa iteracyjnie i składa się z następujących etapów:
 
-1. **Budowa tras** – każda z \( m \) mrówek konstruuje pełny cykl, wybierając kolejne lotniska zgodnie z rozkładem \( p_{ij} \).
+1. **Budowa tras** – każda z $\( m \)$ mrówek konstruuje pełny cykl, wybierając kolejne lotniska zgodnie z rozkładem $\( p_{ij} \)$.
 
 2. **Ocena tras** – obliczana jest długość każdej ścieżki:
 
@@ -136,13 +136,13 @@ $$
 \tau_{ij} \leftarrow (1 - \rho) \cdot \tau_{ij}.
 $$
 
-4. **Depozycja feromonów** – najlepsze \( n_{\text{best}} \) tras wzmacniają poziom feromonów:
+4. **Depozycja feromonów** – najlepsze $\( n_{\text{best}} \)$ tras wzmacniają poziom feromonów:
 
 $$
 \tau_{ij} \leftarrow \tau_{ij} + \sum_{\ell = 1}^{n_{\text{best}}} \frac{\delta_{ij}^{(\ell)}}{C_\ell},
 $$
 
-gdzie \( \delta_{ij}^{(\ell)} = 1 \), jeśli krawędź \( (i,j) \) występuje w trasie \( \ell \), a 0 w przeciwnym razie.
+gdzie $\delta_{ij}^{\ell} = 1$ , jeśli krawędź $\( (i,j) \)$ występuje w trasie $\( \ell \)$, a 0 w przeciwnym razie.
 
 5. **Wczesne zatrzymanie** – jeżeli przez kolejne `patience` iteracji nie nastąpi poprawa najlepszego wyniku, algorytm przerywa działanie.
 
