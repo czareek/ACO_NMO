@@ -39,7 +39,7 @@ Problem komiwojażera (TSP) polega na znalezieniu najkrótszej trasy odwiedzają
 
 ## 4. Ograniczenia i przyjęte uproszczenia
 
-W rzeczywistości oparcie modelu na odległościach pomiędzy lotniskami w lini prostej ( uwzględniając krzywiznę ziemi za pomocą formuły haversine ) jest błędne z wielu względów np. sam fakt że odległość między lotniskiem nie jest dystnasem który przebędzie samolot:
+W rzeczywistości oparcie modelu na odległościach pomiędzy lotniskami w lini prostej ( uwzględniając krzywiznę ziemi za pomocą formuły haversine ) jest błędne z wielu względów np. sam fakt, że odległość między lotniskiem nie jest dystnasem który przebędzie samolot:
 - Samoloty mogą wykorzystywać wiatry w jet streamie, aby zwiększyć swoją prędkość w locie na wschód.
 - Samoloty mogą omijać przelot nad pewnymi terenami np. baz wojskowych
 
@@ -65,7 +65,7 @@ Problem TSP można zapisać jako program liniowy z całkowitymi zmiennymi (MILP)
 
 ### 6.2 Metaheurystyki
 
-Metaheurystyki, takie jak ACO, Simulated Annealing czy Genetic Algorithm, przeszukują przestrzeń rozwiązań przybliżonymi metodami w czasie wielomianowym. Nie gwarantują znalezienia globalnego optimum, ale oferują szybkie uzyskanie tras o jakości bliskiej optymalnej. Zaletą metaheurystyk jest to że nie są one specyficzne do problemu, mogą być dostosowane do konkretnego rodzaju problemu ale przez to jednocześnie wymagają większych zdolności do implementacji w bardziej złożonych problemach, z większa liczbą zmiennych i ograniczeń.
+Metaheurystyki, takie jak ACO, Simulated Annealing czy Genetic Algorithm, przeszukują przestrzeń rozwiązań przybliżonymi metodami w czasie wielomianowym. Nie gwarantują znalezienia globalnego optimum, ale oferują szybkie uzyskanie tras o jakości bliskiej optymalnej. Zaletą metaheurystyk jest to, że nie są one specyficzne do problemu, mogą być dostosowane do konkretnego rodzaju problemu ale przez to jednocześnie wymagają większych zdolności do implementacji w bardziej złożonych problemach, z większa liczbą zmiennych i ograniczeń.
 
 **Trade-offy**:
 
